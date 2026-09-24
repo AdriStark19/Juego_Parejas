@@ -1,0 +1,45 @@
+.alpine {
+    /* Azul Alpine */
+    background: linear-gradient(
+        135deg,
+        var(--alpine-blue-start),
+        var(--alpine-blue-end)
+    );
+
+    color: var(--alpine-text);
+
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-align: center;
+
+    border: 1px solid var(--alpine-border);
+
+    box-shadow: 0 4px 15px var(--alpine-shadow);
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Tema claro */
+:root {
+    --alpine-blue-start: #0066ff;
+    --alpine-blue-end: #003399;
+    --alpine-text: #ffffff;
+    --alpine-border: rgba(0, 210, 255, 0.3);
+    --alpine-shadow: rgba(0, 102, 255, 0.35);
+}
+
+/* Tema oscuro */
+[data-bs-theme="dark"] {
+    --alpine-blue-start: #003399;
+    --alpine-blue-end: #001a4d;
+    --alpine-text: #ffffff;
+    --alpine-border: rgba(0, 210, 255, 0.45);
+    --alpine-shadow: rgba(0, 102, 255, 0.55);
+}
+
+/* Efecto al pasar el ratón */
+.alpine:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--alpine-shadow);
+}
