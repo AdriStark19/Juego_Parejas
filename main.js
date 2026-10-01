@@ -58,6 +58,7 @@ const botonesDificultad = document.querySelectorAll(".difficulty-option")
 const board = document.querySelector(".board")
 const temporizador = document.querySelector(".tiempo");
 const score = document.querySelector(".score");
+const fichas = document.querySelector(".fichas-coches")
 let indice = 3;
 let cartaAnterior = null
 let isPlaying = false
@@ -125,6 +126,7 @@ function reset() {
     cartaAnterior = null
     temporizador.textContent = "00:00"
     actualizarScore()
+    limpiarFichas()
 }
 function timer() {
     segundos++
@@ -180,20 +182,19 @@ function stopGame(win) {
     isPlaying = false
     scoreNumber -= Math.floor(segundos / 10)
     actualizarScore()
-    if(win){
+    if (win) {
         crearFichasTecnicas()
     }
 }
 function actualizarScore() {
     score.textContent = String(scoreNumber).padStart(4, "0")
 }
-function crearFichasTecnicas(){
-    const fichas = document.querySelector(".fichas-coches")
-    while (fichas.firstChild) {
-        fichas.firstChild.remove()
-    }
+function crearFichasTecnicas() {
 
-     fichasTecnicas.forEach((coche, i) => {
+
+    for (let i = 0; i < indice; i++) {
+        const coche = fichasTecnicas[i]
+
         const div = document.createElement("div")
         div.classList.add("ficha-coche", "alpine")
 
@@ -224,6 +225,9 @@ function crearFichasTecnicas(){
         div.appendChild(peso)
 
         fichas.appendChild(div)
-    })
+    }
+}
+function limpiarFichas() {
+    fichas.innerHTML = ""
 }
 
