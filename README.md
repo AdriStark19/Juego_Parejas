@@ -4,7 +4,8 @@ Misión M1 · El Despertar del DOM — Web Development I.
 
 ## Cómo probarlo
 Abre index.html en el navegador (o con Live Server). Pulsa «Jugar»:
-Empareja las imágenes con el número de intentos mínimo posible y de forma rápida. Tiempo y clicks cuentan, al acabar aparecerá una breve descripción relativa a cada foto.
+Empareja las imágenes con el número de intentos mínimo posible y de forma rápida. Tiempo y clicks cuentan, al acabar aparecerá una breve ficha técnica relativa a cada vehículo de la marca Alpine. No se cuenta con opción de reinicio ni pausa por DISEÑO. Para volver a jugar se debe cambiar la dificultad o refrescar la página.
+
 
 ## Uso de IA 
 Recordatorio y correciones sobre html, css, js, boostrap, etc.

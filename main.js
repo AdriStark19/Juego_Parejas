@@ -59,6 +59,9 @@ const board = document.querySelector(".board")
 const temporizador = document.querySelector(".tiempo");
 const score = document.querySelector(".score");
 const fichas = document.querySelector(".fichas-coches")
+const scorePerHit = 100
+const timeDivider = 10
+const scoreLossClick = 2
 let indice = 3;
 let cartaAnterior = null
 let isPlaying = false
@@ -157,15 +160,14 @@ function jugar(event) {
             card.removeEventListener("click", jugar);
             cartaAnterior = null
             aciertos++
-            scoreNumber += 100
+            scoreNumber += scorePerHit 
             actualizarScore()
             if (aciertos === indice) {
-                win = true;
-                stopGame(win)
+                stopGame()
             }
         } else {
 
-            scoreNumber -= 2
+            scoreNumber -= (scoreLossClick *clicks)
             if (scoreNumber <= 0) scoreNumber = 0
             actualizarScore()
             setTimeout(() => {
@@ -177,14 +179,13 @@ function jugar(event) {
         clicks++
     }
 }
-function stopGame(win) {
+function stopGame() {
     clearInterval(cronometro)
     isPlaying = false
     scoreNumber -= Math.floor(segundos / 10)
     actualizarScore()
-    if (win) {
-        crearFichasTecnicas()
-    }
+    crearFichasTecnicas()
+    
 }
 function actualizarScore() {
     score.textContent = String(scoreNumber).padStart(4, "0")
