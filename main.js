@@ -191,7 +191,7 @@ function actualizarScore() {
 }
 function crearFichasTecnicas() {
 
-
+    limpiarFichas()
     for (let i = 0; i < indice; i++) {
         const coche = fichasTecnicas[i]
 
