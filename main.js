@@ -17,6 +17,43 @@ const imagenes = [
     "img/a110Gts.jpeg"
 
 ];
+const fichasTecnicas = [
+    {
+        nombre: "Alpine A290",
+        potencia: "220 CV",
+        motor: "Eléctrico",
+        aceleracion: "0-100 km/h: 6,4 s",
+        peso: "1.479 kg"
+    },
+    {
+        nombre: "Alpine A110 R Ultime",
+        potencia: "345 CV",
+        motor: "1.8 Turbo",
+        aceleracion: "0-100 km/h: 3,8 s",
+        peso: "1.082 kg"
+    },
+    {
+        nombre: "Alpine A390",
+        potencia: "Hasta 470 CV",
+        motor: "Eléctrico AWD",
+        aceleracion: "0-100 km/h: 3,9 s",
+        peso: "≈ 2.100 kg"
+    },
+    {
+        nombre: "Alpine A110",
+        potencia: "252 CV",
+        motor: "1.8 Turbo",
+        aceleracion: "0-100 km/h: 4,5 s",
+        peso: "≈ 1.102 kg"
+    },
+    {
+        nombre: "Alpine A110 GTS",
+        potencia: "300 CV",
+        motor: "1.8 Turbo",
+        aceleracion: "0-100 km/h: 4,2 s",
+        peso: "≈ 1.110 kg"
+    }
+];
 const botonesDificultad = document.querySelectorAll(".difficulty-option")
 const board = document.querySelector(".board")
 const temporizador = document.querySelector(".tiempo");
@@ -32,17 +69,16 @@ let scoreNumber = 0
 botonesDificultad.forEach((boton, i) => {
     boton.addEventListener("click", () => {
         indice = i + 3;
-        console.log(indice)
         board.classList.toggle("medio", indice === 4)
         board.classList.toggle("dificil", indice === 5)
 
         reset()
-        
+
         botonPlay.removeEventListener("click", startGame)
         botonPlay.addEventListener("click", startGame)
 
         crearTablero()
-        
+
     });
 });
 
@@ -57,7 +93,6 @@ function crearTablero() {
     for (let i = 0; i < indice; i++) {
         cartas.push({ id: i, imagen: imagenes[i] })
         cartas.push({ id: i, imagen: imagenes[i] })
-        console.log(indice)
     }
 
     cartas.sort(() => Math.random() - 0.5)
@@ -74,13 +109,13 @@ function crearTablero() {
         card.appendChild(img)
         board.appendChild(card)
         card.addEventListener("click", jugar)
-        
+
     });
 }
 
 crearTablero();
 
-function reset(){
+function reset() {
     clearInterval(cronometro)
     isPlaying = false
     segundos = 0
@@ -97,20 +132,18 @@ function timer() {
     const minutos = Math.floor(segundos / 60)
     const segundosRestantes = segundos % 60
 
-    temporizador.textContent =
-        String(minutos).padStart(2, "0") + ":" +
-        String(segundosRestantes).padStart(2, "0")
+    temporizador.textContent = `${String(minutos).padStart(2, "0")}:${String(segundosRestantes).padStart(2, "0")}`
 }
-function startGame(){
+function startGame() {
     isPlaying = true
     cronometro = setInterval(timer, 1000)
     botonPlay.removeEventListener("click", startGame)
 }
 
 function jugar(event) {
-    if(!isPlaying) return
+    if (!isPlaying) return
     const card = event.currentTarget
-
+    let win = false;
     card.classList.toggle("visible")
 
     if (cartaAnterior === null) {
@@ -123,26 +156,74 @@ function jugar(event) {
             cartaAnterior = null
             aciertos++
             scoreNumber += 100
-            score.textContent = String(scoreNumber).padStart(4, "0")
-            if(aciertos === indice){
-                stopGame()
+            actualizarScore()
+            if (aciertos === indice) {
+                win = true;
+                stopGame(win)
             }
         } else {
-            clicks++
+
             scoreNumber -= 2
-            if(scoreNumber <= 0) scoreNumber = 0
-            score.textContent = String(scoreNumber).padStart(4, "0")
+            if (scoreNumber <= 0) scoreNumber = 0
+            actualizarScore()
             setTimeout(() => {
                 cartaAnterior.classList.remove("visible")
                 card.classList.remove("visible")
                 cartaAnterior = null
             }, 300)
         }
+        clicks++
     }
 }
-function stopGame(){
+function stopGame(win) {
     clearInterval(cronometro)
     isPlaying = false
     scoreNumber -= Math.floor(segundos / 10)
+    actualizarScore()
+    if(win){
+        crearFichasTecnicas()
+    }
+}
+function actualizarScore() {
     score.textContent = String(scoreNumber).padStart(4, "0")
 }
+function crearFichasTecnicas(){
+    const fichas = document.querySelector(".fichas-coches")
+    while (fichas.firstChild) {
+        fichas.firstChild.remove()
+    }
+
+     fichasTecnicas.forEach((coche, i) => {
+        const div = document.createElement("div")
+        div.classList.add("ficha-coche", "alpine")
+
+        const img = document.createElement("img")
+        img.src = imagenes[i]
+        img.alt = coche.nombre
+
+        const nombre = document.createElement("h2")
+        nombre.textContent = coche.nombre
+
+        const potencia = document.createElement("p")
+        potencia.textContent = `Potencia: ${coche.potencia}`
+
+        const motor = document.createElement("p")
+        motor.textContent = `Motor: ${coche.motor}`
+
+        const aceleracion = document.createElement("p")
+        aceleracion.textContent = coche.aceleracion
+
+        const peso = document.createElement("p")
+        peso.textContent = `Peso: ${coche.peso}`
+
+        div.appendChild(img)
+        div.appendChild(nombre)
+        div.appendChild(potencia)
+        div.appendChild(motor)
+        div.appendChild(aceleracion)
+        div.appendChild(peso)
+
+        fichas.appendChild(div)
+    })
+}
+

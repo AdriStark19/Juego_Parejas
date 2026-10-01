@@ -13,12 +13,14 @@ body {
 
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 header {
     display: list-item;
     justify-content: center;
     align-items: center;
     text-align: center;
 }
+
 body.dark {
     --bg: #001a4d;
     --text: #ffffff;
@@ -29,19 +31,10 @@ body.dark {
     --alpine-shadow: rgba(0, 102, 255, 0.55);
 }
 
-@media (max-width: 768px) {
-    .container {
-        width: 95%;
-    }
-}
-
-
 .alpine {
-    background: linear-gradient(
-        135deg,
-        var(--alpine-blue-start),
-        var(--alpine-blue-end)
-    );
+    background: linear-gradient(135deg,
+            var(--alpine-blue-start),
+            var(--alpine-blue-end));
 
     color: var(--alpine-text);
     border: 1px solid var(--alpine-border);
@@ -58,7 +51,7 @@ body.dark {
 }
 
 .game {
-    
+
     margin: auto;
 }
 
@@ -76,7 +69,7 @@ body.dark {
     gap: 8px;
 }
 
-.difficulty > span {
+.difficulty>span {
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -92,7 +85,7 @@ body.dark {
 .difficulty-option {
     border: 1px solid rgba(255, 255, 255, 0.5);
     background: transparent;
-    
+
     padding: 9px 16px;
     border-radius: 8px;
 
@@ -145,7 +138,7 @@ body.dark {
     gap: 30px;
 }
 
-.game-info > div {
+.game-info>div {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -171,6 +164,7 @@ body.dark {
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
 }
+
 .board.medio {
     grid-template-columns: repeat(4, 1fr);
 }
@@ -184,11 +178,9 @@ body.dark {
     justify-self: center;
     aspect-ratio: 4 / 3;
     max-height: 200px;
-    background: linear-gradient(
-        135deg,
-        #0066ff,
-        #003399
-    );
+    background: linear-gradient(135deg,
+            #0066ff,
+            #003399);
 
     border: 1px solid rgba(0, 210, 255, 0.3);
     border-radius: 12px;
@@ -204,6 +196,7 @@ body.dark {
     transform: scale(1.03);
     box-shadow: 0 5px 15px rgba(0, 102, 255, 0.4);
 }
+
 .card img {
     width: 100%;
     height: 100%;
@@ -238,7 +231,7 @@ body.dark {
         justify-content: space-between;
     }
 
-    .game-info > div {
+    .game-info>div {
         align-items: center;
     }
 
@@ -246,4 +239,35 @@ body.dark {
         grid-template-columns: repeat(3, 1fr);
         gap: 10px;
     }
+
+    .fichas-coches {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+.fichas-coches {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 20px;
+
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ficha-coche {
+    text-align: center;
+    padding: 15px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.ficha-coche img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
 }
