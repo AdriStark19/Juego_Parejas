@@ -124,7 +124,7 @@ function reset() {
     scoreNumber = 0
     cartaAnterior = null
     temporizador.textContent = "00:00"
-    score.textContent = "0000"
+    actualizarScore()
 }
 function timer() {
     segundos++
