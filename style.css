@@ -1,5 +1,42 @@
+body {
+    --bg: #0066ff;
+    --text: #111111;
+
+    --alpine-blue-start: #0066ff;
+    --alpine-blue-end: #003399;
+    --alpine-text: #ffffff;
+    --alpine-border: rgba(0, 210, 255, 0.3);
+    --alpine-shadow: rgba(0, 102, 255, 0.35);
+
+    background-color: var(--bg);
+    color: var(--text);
+
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+header {
+    display: list-item;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+body.dark {
+    --bg: #001a4d;
+    --text: #ffffff;
+
+    --alpine-blue-start: #003399;
+    --alpine-blue-end: #001a4d;
+    --alpine-border: rgba(0, 210, 255, 0.45);
+    --alpine-shadow: rgba(0, 102, 255, 0.55);
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+}
+
+
 .alpine {
-    /* Azul Alpine */
     background: linear-gradient(
         135deg,
         var(--alpine-blue-start),
@@ -7,39 +44,206 @@
     );
 
     color: var(--alpine-text);
-
-    padding: 12px 24px;
-    border-radius: 10px;
-    font-weight: 700;
-    text-align: center;
-
     border: 1px solid var(--alpine-border);
-
     box-shadow: 0 4px 15px var(--alpine-shadow);
+    border-radius: 16px;
 
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-/* Tema claro */
-:root {
-    --alpine-blue-start: #0066ff;
-    --alpine-blue-end: #003399;
-    --alpine-text: #ffffff;
-    --alpine-border: rgba(0, 210, 255, 0.3);
-    --alpine-shadow: rgba(0, 102, 255, 0.35);
-}
-
-/* Tema oscuro */
-[data-bs-theme="dark"] {
-    --alpine-blue-start: #003399;
-    --alpine-blue-end: #001a4d;
-    --alpine-text: #ffffff;
-    --alpine-border: rgba(0, 210, 255, 0.45);
-    --alpine-shadow: rgba(0, 102, 255, 0.55);
-}
-
-/* Efecto al pasar el ratón */
 .alpine:hover {
-    transform: translateY(-2px);
     box-shadow: 0 6px 20px var(--alpine-shadow);
+}
+
+.game {
+    
+    margin: auto;
+}
+
+.game-controls {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.difficulty {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.difficulty > span {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: white;
+    opacity: 0.8;
+}
+
+.difficulty-options {
+    display: flex;
+    gap: 5px;
+}
+
+.difficulty-option {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: transparent;
+    
+    padding: 9px 16px;
+    border-radius: 8px;
+
+    cursor: pointer;
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+.difficulty-option:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.difficulty-option.active {
+    background-color: white;
+    color: #003399;
+    border-color: white;
+}
+
+.play-button {
+    border: none;
+    border-radius: 10px;
+
+    padding: 14px 30px;
+
+    background-color: white;
+    color: #003399;
+
+    font-size: 1rem;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.play-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.play-button:active {
+    transform: translateY(0);
+}
+
+.game-info {
+    display: flex;
+    gap: 30px;
+}
+
+.game-info > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.info-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: white;
+    opacity: 0.7;
+}
+
+.info-value {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: white;
+    font-variant-numeric: tabular-nums;
+}
+
+.board {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+.board.medio {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+
+.board.dificil {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.card {
+    justify-self: center;
+    aspect-ratio: 4 / 3;
+    max-height: 200px;
+    background: linear-gradient(
+        135deg,
+        #0066ff,
+        #003399
+    );
+
+    border: 1px solid rgba(0, 210, 255, 0.3);
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(0, 102, 255, 0.4);
+}
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    border-radius: 12px;
+}
+
+.card.visible img {
+    opacity: 100;
+}
+
+@media (max-width: 768px) {
+    .game-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .difficulty-options {
+        width: 100%;
+    }
+
+    .difficulty-option {
+        flex: 1;
+    }
+
+    .play-button {
+        width: 100%;
+    }
+
+    .game-info {
+        justify-content: space-between;
+    }
+
+    .game-info > div {
+        align-items: center;
+    }
+
+    .board {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
 }
