@@ -73,13 +73,14 @@ let scoreNumber = 0
 botonesDificultad.forEach((boton, i) => {
     boton.addEventListener("click", () => {
         indice = i + 3;
+
+        botonesDificultad.forEach(b => b.classList.remove("active"));
+        boton.classList.add("active");
+
         board.classList.toggle("medio", indice === 4)
         board.classList.toggle("dificil", indice === 5)
 
         reset()
-
-        botonPlay.removeEventListener("click", startGame)
-        botonPlay.addEventListener("click", startGame)
 
         crearTablero()
 
@@ -128,6 +129,7 @@ function reset() {
     scoreNumber = 0
     cartaAnterior = null
     temporizador.textContent = "00:00"
+    botonPlay.addEventListener("click", startGame)
     actualizarScore()
     limpiarFichas()
 }
@@ -148,7 +150,6 @@ function startGame() {
 function jugar(event) {
     if (!isPlaying) return
     const card = event.currentTarget
-    let win = false;
     card.classList.toggle("visible")
 
     if (cartaAnterior === null) {
@@ -182,7 +183,7 @@ function jugar(event) {
 function stopGame() {
     clearInterval(cronometro)
     isPlaying = false
-    scoreNumber -= Math.floor(segundos / 10)
+    scoreNumber -= Math.floor(segundos / timeDivider)
     actualizarScore()
     crearFichasTecnicas()
     
