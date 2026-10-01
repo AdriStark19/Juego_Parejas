@@ -184,6 +184,7 @@ function stopGame() {
     clearInterval(cronometro)
     isPlaying = false
     scoreNumber -= Math.floor(segundos / timeDivider)
+    if(scoreNumber <= 0) scoreNumber = 0
     actualizarScore()
     crearFichasTecnicas()
     
