@@ -22,14 +22,27 @@ const board = document.querySelector(".board")
 const temporizador = document.querySelector(".tiempo");
 const score = document.querySelector(".score");
 let indice = 3;
-
+let cartaAnterior = null
+let isPlaying = false
+let segundos = 0
+let cronometro
+let aciertos = 0
+let clicks = 0
+let scoreNumber = 0
 botonesDificultad.forEach((boton, i) => {
     boton.addEventListener("click", () => {
         indice = i + 3;
         console.log(indice)
         board.classList.toggle("medio", indice === 4)
         board.classList.toggle("dificil", indice === 5)
+
+        reset()
+        
+        botonPlay.removeEventListener("click", startGame)
+        botonPlay.addEventListener("click", startGame)
+
         crearTablero()
+        
     });
 });
 
@@ -61,18 +74,23 @@ function crearTablero() {
         card.appendChild(img)
         board.appendChild(card)
         card.addEventListener("click", jugar)
+        
     });
 }
 
 crearTablero();
-let cartaAnterior = null
 
-let isPlaying = false
-let segundos = 0
-let cronometro
-let aciertos = 0
-let clicks = 0
-let scoreNumber = 0
+function reset(){
+    clearInterval(cronometro)
+    isPlaying = false
+    segundos = 0
+    aciertos = 0
+    clicks = 0
+    scoreNumber = 0
+    cartaAnterior = null
+    temporizador.textContent = "00:00"
+    score.textContent = "0000"
+}
 function timer() {
     segundos++
 
@@ -86,6 +104,7 @@ function timer() {
 function startGame(){
     isPlaying = true
     cronometro = setInterval(timer, 1000)
+    botonPlay.removeEventListener("click", startGame)
 }
 
 function jugar(event) {
@@ -117,14 +136,13 @@ function jugar(event) {
                 cartaAnterior.classList.remove("visible")
                 card.classList.remove("visible")
                 cartaAnterior = null
-            }, 1000)
+            }, 300)
         }
     }
 }
 function stopGame(){
     clearInterval(cronometro)
     isPlaying = false
-    botonPlay.removeEventListener
     scoreNumber -= Math.floor(segundos / 10)
     score.textContent = String(scoreNumber).padStart(4, "0")
 }
