@@ -206,7 +206,16 @@ body.dark {
 }
 
 .card.visible img {
-    opacity: 100;
+    opacity: 1;
+}
+.dataPlayer{
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    display:flex
+}
+.dataPlayer[hidden]{
+    display:none
 }
 
 @media (max-width: 768px) {

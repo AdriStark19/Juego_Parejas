@@ -1,4 +1,5 @@
 document.addEventListener("keydown", (event) => {
+    if (event.target.tagName === "INPUT") return
     if (event.key.toLowerCase() === "t") {
         swapTheme();
     }
@@ -55,14 +56,31 @@ const fichasTecnicas = [
     }
 ];
 const botonesDificultad = document.querySelectorAll(".difficulty-option")
+
 const board = document.querySelector(".board")
+board.addEventListener("click", jugar)
+
 const temporizador = document.querySelector(".tiempo");
 const score = document.querySelector(".score");
 const fichas = document.querySelector(".fichas-coches")
 const scorePerHit = 100
 const timeDivider = 10
 const scoreLossClick = 2
-let indice = 3;
+
+const dataPlayer = document.querySelector(".dataPlayer")
+const nombreInput = document.getElementById("nombre-input")
+const guardarNombreBoton = document.getElementById("boton-guardar-nombre")
+guardarNombreBoton.addEventListener("click", guardarMejorPuntuacion)
+nombreInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        guardarNombreBoton.click()
+    }
+})
+
+const nombreRecord = document.getElementById("nombre-record")
+const mejorScoreHTML = document.getElementById("mejor-score")
+
+let numParejas = 3;
 let cartaAnterior = null
 let isPlaying = false
 let segundos = 0
@@ -70,15 +88,18 @@ let cronometro
 let aciertos = 0
 let clicks = 0
 let scoreNumber = 0
+let bloqueado = false
+let mejorScore = 0
+let nombreJugador = null
 botonesDificultad.forEach((boton, i) => {
     boton.addEventListener("click", () => {
-        indice = i + 3;
+        numParejas = i + 3;
 
         botonesDificultad.forEach(b => b.classList.remove("active"));
         boton.classList.add("active");
 
-        board.classList.toggle("medio", indice === 4)
-        board.classList.toggle("dificil", indice === 5)
+        board.classList.toggle("medio", numParejas === 4)
+        board.classList.toggle("dificil", numParejas === 5)
 
         reset()
 
@@ -89,13 +110,11 @@ botonesDificultad.forEach((boton, i) => {
 
 function crearTablero() {
 
-    while (board.firstChild) {
-        board.firstChild.remove()
-    }
+    board.innerHTML = ""
 
     let cartas = [];
 
-    for (let i = 0; i < indice; i++) {
+    for (let i = 0; i < numParejas; i++) {
         cartas.push({ id: i, imagen: imagenes[i] })
         cartas.push({ id: i, imagen: imagenes[i] })
     }
@@ -107,13 +126,13 @@ function crearTablero() {
         const card = document.createElement("div")
         card.classList.add("card")
         card.dataset.id = carta.id
-
+        card.emparejado = false
         const img = document.createElement("img")
         img.src = carta.imagen
 
         card.appendChild(img)
         board.appendChild(card)
-        card.addEventListener("click", jugar)
+
 
     });
 }
@@ -132,6 +151,7 @@ function reset() {
     botonPlay.addEventListener("click", startGame)
     actualizarScore()
     limpiarFichas()
+    ocultarDataPlayer()
 }
 function timer() {
     segundos++
@@ -146,48 +166,65 @@ function startGame() {
     cronometro = setInterval(timer, 1000)
     botonPlay.removeEventListener("click", startGame)
 }
-
+const sonidoAcierto = new Audio("sound/ironman.mp3")
+const sonidoFallo = new Audio("sound/mario.mp3")
 function jugar(event) {
-    if (!isPlaying) return
-    const card = event.currentTarget
-    card.classList.toggle("visible")
+    if (!isPlaying || bloqueado) return
+    const card = event.target.closest(".card")
+
+    if (!card) return
+    if (card.emparejado) return
+    if (card === cartaAnterior) return
+
+    card.classList.add("visible")
 
     if (cartaAnterior === null) {
         cartaAnterior = card
-    } else {
-
-        if (cartaAnterior.dataset.id === card.dataset.id) {
-            cartaAnterior.removeEventListener("click", jugar);
-            card.removeEventListener("click", jugar);
-            cartaAnterior = null
-            aciertos++
-            scoreNumber += scorePerHit 
-            actualizarScore()
-            if (aciertos === indice) {
-                stopGame()
-            }
-        } else {
-
-            scoreNumber -= (scoreLossClick *clicks)
-            if (scoreNumber <= 0) scoreNumber = 0
-            actualizarScore()
-            setTimeout(() => {
-                cartaAnterior.classList.remove("visible")
-                card.classList.remove("visible")
-                cartaAnterior = null
-            }, 300)
-        }
-        clicks++
+        reproducirSonido(sonidoAcierto)
+        return
     }
+
+    if (cartaAnterior.dataset.id === card.dataset.id) {
+        reproducirSonido(sonidoAcierto)
+        cartaAnterior.emparejado = true
+        card.emparejado = true
+        cartaAnterior = null
+        aciertos++
+        scoreNumber += scorePerHit * numParejas
+        actualizarScore()
+
+        if (aciertos === numParejas) {
+            stopGame()
+        }
+    } else {
+        reproducirSonido(sonidoFallo)
+        bloqueado = true
+
+        scoreNumber -= scoreLossClick * clicks
+
+        if (scoreNumber <= 0) scoreNumber = 0
+        actualizarScore()
+
+        const primeraCarta = cartaAnterior
+
+        setTimeout(() => {
+            primeraCarta.classList.remove("visible")
+            card.classList.remove("visible")
+            cartaAnterior = null
+            bloqueado = false
+        }, 300)
+    }
+    clicks++
 }
+
 function stopGame() {
     clearInterval(cronometro)
     isPlaying = false
     scoreNumber -= Math.floor(segundos / timeDivider)
-    if(scoreNumber <= 0) scoreNumber = 0
+    if (scoreNumber <= 0) scoreNumber = 0
     actualizarScore()
     crearFichasTecnicas()
-    
+    mostrarDataPlayer()
 }
 function actualizarScore() {
     score.textContent = String(scoreNumber).padStart(4, "0")
@@ -195,7 +232,7 @@ function actualizarScore() {
 function crearFichasTecnicas() {
 
     limpiarFichas()
-    for (let i = 0; i < indice; i++) {
+    for (let i = 0; i < numParejas; i++) {
         const coche = fichasTecnicas[i]
 
         const div = document.createElement("div")
@@ -233,4 +270,27 @@ function crearFichasTecnicas() {
 function limpiarFichas() {
     fichas.innerHTML = ""
 }
+const volumen = document.getElementById("volumen")
+function reproducirSonido(sonido) {
+    sonido.currentTime = 0
+    sonido.volume = volumen.value
+    sonido.play()
+}
+function guardarMejorPuntuacion() {
+    if (nombreInput.value === "" || scoreNumber <= mejorScore) return
 
+    mejorScore = scoreNumber
+    nombreJugador = nombreInput.value
+
+    nombreRecord.textContent = nombreJugador.trim()
+    mejorScoreHTML.textContent = `MEJOR: ${String(mejorScore).padStart(4, "0")}`
+
+    ocultarDataPlayer()
+}
+function mostrarDataPlayer() {
+    dataPlayer.hidden = false
+}
+
+function ocultarDataPlayer() {
+    dataPlayer.hidden = true
+}
