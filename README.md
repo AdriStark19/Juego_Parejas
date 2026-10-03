@@ -21,4 +21,4 @@ Elección de cambio del tema oscuro-claro a través de boostrap en lugar de tene
 Si uso display none las cards no se mostrarían por lo que tuve que jugar con la transparencia de la imagen en su lugar.
 Cambio a un único listner por tablero, incorporación de un bloqueo a los clicks para que el tiempo de espera no dé problemas.
 Elección entre visiblidad permanente o no del input para mejor puntuación. Finalmente para evitar cambios de nombre durante la propia partida solo se mostrará tras acabar el juego.
-En lugar de gestionar por variable que se muestren o no los inputs está separado en 2 funciones por si a futuro requieren lógicas diferentes.
+En lugar de gestionar por variable que se muestren o no los inputs está separado en 2 funciones por si a futuro requieren lógicas diferentes. Se crea emparejado como booleana porque comparar strings de "true" y "false" es más costoso

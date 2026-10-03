@@ -50,11 +50,6 @@ body.dark {
     box-shadow: 0 6px 20px var(--alpine-shadow);
 }
 
-.game {
-
-    margin: auto;
-}
-
 .game-controls {
     margin-top: 20px;
     display: flex;
@@ -151,7 +146,7 @@ body.dark {
     opacity: 0.7;
 }
 
-.time, .score {
+.tiempo, .score {
     font-size: 1.3rem;
     font-weight: 800;
     color: white;
@@ -212,10 +207,10 @@ body.dark {
     justify-content: center;
     align-items: center;
     margin-top: 10px;
-    display:flex
+    display:flex;
 }
 .dataPlayer[hidden]{
-    display:none
+    display:none;
 }
 
 @media (max-width: 768px) {
