@@ -182,7 +182,7 @@ function jugar(event) {
     if (card === cartaAnterior) return
 
     clicks++
-    
+
     card.classList.add("visible")
 
     if (cartaAnterior === null) {
@@ -278,7 +278,9 @@ function limpiarFichas() {
 function reproducirSonido(sonido) {
     sonido.currentTime = 0
     sonido.volume = volumen.value
-    sonido.play()
+    sonido.play().catch(error => {
+        console.error("No se pudo reproducir el sonido:", error)
+    })
 }
 function guardarMejorPuntuacion() {
     if (nombreInput.value.trim() === "" || scoreNumber <= mejorScore) return
