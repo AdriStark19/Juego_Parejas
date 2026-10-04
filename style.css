@@ -50,7 +50,7 @@ body.dark {
     flex-direction: column;
     gap: 8px;
 }
-.difficulty>span {
+.difficulty span {
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
